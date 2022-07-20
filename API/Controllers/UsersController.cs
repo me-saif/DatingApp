@@ -8,9 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController: ControllerBase
+
+    public class UsersController: BaseApiController
     {
         private readonly DataContext _context;
 
@@ -21,7 +20,9 @@ namespace API.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUser>>> Get(){
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            if(users==null) return BadRequest("No Records are there");
+            return users;
         }  
 
         [HttpGet("{id}")]
